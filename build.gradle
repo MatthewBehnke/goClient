@@ -1,0 +1,41 @@
+plugins {
+    id 'com.github.blindpirate.gogradle' version '0.11.3'
+}
+
+goBuild {
+    // Cross-compile output
+    targetPlatform = ['windows-amd64', 'linux-amd64', 'linux-386']
+    
+    // Output location, can be relative path (to project root) or absolute path
+    // The ${} placeholder will be rendered in cross-compile
+    outputLocation = './build/${GOOS}_${GOARCH}_${PROJECT_NAME}${GOEXE}'
+}
+
+golang {
+     // Import path of package to be built
+    packagePath = 'github.com/user/project'
+    
+    // The buid mode. There are two alternatives: DEVELOP/REPRODUCIBLE, REPRODUCIBLE by default
+    // This configuration will be overwritten by command line argument -Dgogradle.mode
+    // REP/DEV for abbreviation
+    buildMode = 'REPRODUCIBLE'
+    
+    // The Go version to use. See https://golang.org/dl/
+    // If not specified, Gogradle will find local go process. If not found, the latest version will be downloaded and installed automatically
+    // If specified, Gogradle will check if local go version matches the specific version. If not, the specific version will be downloaded and installed automatcally
+    // goVersion = '1.8.1'
+    
+    // Default value is "go". Modify this when go is not in $PATH
+    // You can use goExecutable = 'IGNORE_LOCAL' to ignore local go forcibly 
+    // goExecutable = '/path/to/go/executable'
+    
+    // For custom distribution repository. Gogradle will try to download go distributions from
+    // http://golangtc.com/static/go/${version}/go${version}.${os}-${arch}${extension}
+    // goBinaryDownloadTemplate == 'http://golangtc.com/static/go/${version}/go${version}.${os}-${arch}${extension}'
+
+    // If not set, GOROOT will be <directory of go binary>/..
+    // goRoot = '/path/to/my/goroot'
+    
+    // aka. build constraint. See https://golang.org/pkg/go/build/#hdr-Build_Constraints
+    // buildTags = ['appengine','anothertag']
+}
